@@ -7,11 +7,37 @@ import { useNavigate } from "react-router-dom";
 
 const form = () => {
 
+  const [categoria, setCategoria] = useState('')
+  const [total, setTotal] = useState( )
+  const [concepto, setConcepto] = useState('')
+  const [pago, setPago] = useState('')
+
   const {config} = useAuth()
   const navigate = useNavigate()
 
   const hamdleSudmit = async (e) => {
+    setConcepto(categoria)
     e.preventDefault();
+    const obj = {
+      categoria: categoria,
+      montoTotal: total,
+      concepto: concepto,
+      metodoDePago: pago,
+    }
+
+    if (Object.values(obj).includes('')) {
+      return
+    }
+
+    try {
+      await ClientHttp.post('/gastos', obj, config);
+      console.log('terminado');
+      navigate('/Layout')
+    } catch (error) {
+
+      console.log(error);
+
+    }
   }
 
   return (
@@ -23,38 +49,38 @@ const form = () => {
           <form onSubmit={hamdleSudmit} class="px-8 pt-6 pb-8 mb-4">
 
           <div class="mb-6">
-             <label class="block text-gray-700 text-2xl font-bold mb-2" for="password">
+             <label class="block text-gray-700 text-2xl font-bold mb-2" for="categoria">
                 Categoria del gasto
               </label>
-              <select className=" w-full py-2 px-3 border border-slate-900 rounded">
-                <option value="">---Seleccione un metodo de pago---</option>
-                <option value="Efectivo">compra de productos e insumos</option>
-                <option value="Deuda">Arriendo</option>
-                <option value="Deuda">Nomina</option>
+              <select value={categoria} onChange={e => {setCategoria(e.target.value), setConcepto(e.target.value)}} id='categoria' className=" w-full py-2 px-3 border border-slate-900 rounded">
+                <option value="">---Seleccione una categoria---</option>
+                <option value="compra de productos e insumos">compra de productos e insumos</option>
+                <option value="Arriendo">Arriendo</option>
+                <option value="Nomina">Nomina</option>
               </select>
             </div>
 
             <div class="mb-5">
-              <label class="block text-gray-700 text-2xl font-bold mb-2" for="username">
+              <label class="block text-gray-700 text-2xl font-bold mb-2" for="total">
                 Monto Total
               </label>
-              <input class="shadow appearance-none border border-slate-900 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              <input value={total} onChange={e => setTotal(e.target.value)} class="shadow appearance-none border border-slate-900 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                id="total" type="number" placeholder="Monto Total"/>
             </div>
 
             <div class="mb-5">
-              <label class="block text-gray-700 text-2xl font-bold mb-2" for="username">
+              <label class="block text-gray-700 text-2xl font-bold mb-2" for="concepto">
                 Concepto
               </label>
-              <input class="shadow appearance-none border border-slate-900 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username"
-                  type="text" placeholder="Concepto"/>
+              <input disabled value={categoria} class="shadow appearance-none border border-slate-900 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                  id="concepto" type="text" placeholder="Concepto"/>
             </div>
 
             <div class="mb-6">
-             <label class="block text-gray-700 text-2xl font-bold mb-2" for="password">
+             <label class="block text-gray-700 text-2xl font-bold mb-2" for="metodo de pago">
                 Metodo de pago
               </label>
-              <select    className=" w-full py-2 px-3 border border-slate-900 rounded">
+              <select alue={pago} onChange={e => setPago(e.target.value)} id='metodo de pago' className=" w-full py-2 px-3 border border-slate-900 rounded">
                 <option value="">---Seleccione un metodo de pago---</option>
                 <option value="Efectivo">Efectivo</option>
                 <option value="Deuda">Deuda</option>

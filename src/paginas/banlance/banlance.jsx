@@ -15,6 +15,11 @@ const Banlance = () => {
 
   const [ventas, setVentas] = useState([]);
 
+  const [egresos, setEgresos] = useState([]);
+
+  const [hola, setHola] = useState([]);
+
+
   const [id, setId] = useState('');
 
   const [startDate, setStartDate] = useState(new Date());
@@ -25,7 +30,7 @@ const Banlance = () => {
 
   const [utilidad, setUtilidad] = useState( )
 
-  const [gastos, setGastos] = useState(300)
+  const [gastos, setGastos] = useState(0)
 
 
 
@@ -49,6 +54,28 @@ const Banlance = () => {
     ventasInfo();
 
   },[]);
+
+  useEffect(() => {
+
+    const ventasInfo = async() => {
+      
+      try {
+        const { data } = await ClientHttp.get('/gastos', config);
+        data.map( el => setHola(el))
+        setVentas(data);
+        let reduce = data.reduce((acumulador, actual) => acumulador + actual.montoTotal, 0);
+        setGastos(reduce)
+      } catch (error) {
+
+        console.log(error);
+
+      }
+    }
+
+    ventasInfo();
+
+  },[]);
+
 
 
   const openModal = () => {
@@ -157,7 +184,7 @@ const Banlance = () => {
 
       <div className='flex flex-col mb-7 justify-center items-center'>
 
-        {ventas < 1 ? 
+        {ventas < 1 && egresos < 1 ? 
         <div class="flex flex-col items-center mt-10">
           <img src="../../../public/img/search-fail.svg" alt="" />
           <p class="font-sans text-2xl">
@@ -165,7 +192,7 @@ const Banlance = () => {
           </p>
         </div> :
         ventas.map( (el) => (
-          <div  className='flex justify-between w-1/2 mt-10 bg-blue-500 text-white cursor-pointer py-3 px-8 rounded-2xl'>
+          <div  className='flex justify-between w-1/2 mt-10 bg-blue-500  hover:bg-blue-600 text-white cursor-pointer py-3 px-8 rounded-2xl'>
 
             <div onClick={() => {openModal(); setId(el._id)}} className=' flex cursor-pointer w-full'>
                <div className='w-3/4'>
@@ -187,7 +214,38 @@ const Banlance = () => {
               </div>
             
           </div>
-        )) }
+        ))}
+
+
+      { egresos.map( (el) => (
+          <div  className='flex justify-between w-1/2 mt-10 bg-red-500 hover:bg-red-600 text-white cursor-pointer py-3 px-8 rounded-2xl'>
+
+            <div onClick={() => {openModal(); setId(el._id)}} className=' flex cursor-pointer w-full'>
+               <div className='w-3/4'>
+                <p>concepto: </p>
+                <p className=' text-3xl '>{el.concepto}</p>
+              </div>
+              <div className=' w-1/3 text-right flex flex-col'>
+                <p>Total: </p>
+                <p className=' text-3xl '>{el.montoTotal}</p>
+                <p>{el.metodoDePago}</p>
+              </div>
+            </div>
+            
+             
+
+              <div className=' w-1/3 text-right flex flex-col mt-3'>
+                <Btn bg={' bg-red-500 hover:bg-red-800 ml-5 mb-2 uppercase'} >Eliminar</Btn>
+                <Btn bg={' bg-green-500 hover:bg-green-800 ml-5 mt-2 uppercase'} >Editar</Btn>
+              </div>
+            
+          </div>
+        ))
+      }
+
+        
+
+        
         
       </div>
 
