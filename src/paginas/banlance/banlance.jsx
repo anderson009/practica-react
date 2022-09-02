@@ -17,8 +17,6 @@ const Banlance = () => {
 
   const [egresos, setEgresos] = useState([]);
 
-  const [hola, setHola] = useState([]);
-
 
   const [id, setId] = useState('');
 
@@ -28,7 +26,7 @@ const Banlance = () => {
 
   const {modal, setModal} = useModal()
 
-  const [utilidad, setUtilidad] = useState( )
+  const [utilidad, setUtilidad] = useState(0)
 
   const [gastos, setGastos] = useState(0)
 
@@ -61,8 +59,7 @@ const Banlance = () => {
       
       try {
         const { data } = await ClientHttp.get('/gastos', config);
-        data.map( el => setHola(el))
-        setVentas(data);
+        setEgresos(data);
         let reduce = data.reduce((acumulador, actual) => acumulador + actual.montoTotal, 0);
         setGastos(reduce)
       } catch (error) {

@@ -47,6 +47,13 @@ const layout = () => {
 
                 <li>
                   <Link
+                    to={'inventario'} className="font-semibold tracking-tight block cursor-pointer p-2 hover:text-blue-500 transition-colors duration-300"
+                    >Inventario
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
                     to={'perfil'} className="font-semibold tracking-tight block cursor-pointer p-2 hover:text-blue-500 transition-colors duration-300"
                     >Perfil
                   </Link>

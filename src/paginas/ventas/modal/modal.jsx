@@ -3,33 +3,16 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { ClientHttp } from '../../../services/client_http';
 import useAuth from "../../../hooks/auth/useAuth";
+import useProducts from "../../../hooks/products/useProducts";
 
 const modal = ({setModal, titulo, setTotal, setProducts, setConcepto}) => {
-    const [products, setProducts0] = useState([])
+   
 
     const [carrito, setCarrito] = useState([])
 
     const [cantidad, setCantidad] = useState(1)
 
-    const {config} = useAuth()
-
-
-    useEffect( () => {
-        const ventasInfo = async() => {
-
-            try {
-      
-              let respuesta = await ClientHttp.get('/products', config);
-              let resp = respuesta.data;
-              setProducts0(resp)
-            } catch (error) {
-      
-              console.log(error);
-      
-            }
-          }
-          ventasInfo()
-    }, [])
+    const {products} = useProducts()
 
 
     const agregarCarrito = producto => {

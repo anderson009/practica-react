@@ -7,8 +7,10 @@ import Perfil from "./paginas/perfil/perfil";
 import AuthLayout from "./layouts/auth/authLayout";
 import Ventas from "./paginas/ventas/createVentas/createVenta";
 import Gastos from "./paginas/gastos/registrarGastos";
+import Inventario from "./paginas/inventario/inventario";
 import { AuthProvider } from "./context/auth/AuthProvider";
 import { ModalProvider } from "./context/modal/ModalProvider";
+import { ProductsProvider } from "./context/products/ProductsProvider";
 
 function App() {
 
@@ -16,6 +18,7 @@ function App() {
     <BrowserRouter>
      <AuthProvider>
      <ModalProvider>
+      <ProductsProvider>
       <Routes>
         <Route path="/" element={<AuthLayout />}>
           <Route index element={ <Login />} />
@@ -26,8 +29,10 @@ function App() {
           <Route index element={ <Banlance />} />
           <Route path='registerVenta' element={ <Ventas />} />
           <Route path='registerGasto' element={ <Gastos />} />
+          <Route path='inventario' element={ <Inventario />} />
         </Route>
       </Routes>
+      </ProductsProvider>
     </ModalProvider>
     </AuthProvider>
     </BrowserRouter>  
